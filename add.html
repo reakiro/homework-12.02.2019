@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>db json::new product</title>
+	<script src="node_modules/jquery/dist/jquery.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$("#add").on("click", function(e) {
+
+					e.preventDefault();
+
+					console.log('hi')
+
+					var body = {
+						name: $("form").find("[name=name]").val(),
+						category:  $("form").find("[name=category]").val(),
+						price:  $("form").find("[name=price]").val()
+					};
+
+					$.ajax({
+						type: "POST",
+						url: "http://localhost:4000/products",
+						data: body,
+						dataType: "json", 
+						success: function(product) {
+							window.location.replace("index.html");
+						}
+					});
+				});
+
+			$("#homepage").on("click", function() {
+				window.location.replace("index.html");
+			})
+		});
+	</script>
+</head>
+<body>
+	<button id="homepage">homepage</button>
+	<form>
+		<input type="text" name="name">
+		<input type="text" name="category">
+		<input type="text" name="price">
+		<button id="add">add product</button>
+	</form>
+</body>
+</html>

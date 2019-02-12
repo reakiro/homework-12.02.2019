@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="node_modules/jquery/dist/jquery.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			$("#btn").click(function() {
+				// var xhr = new XMLHttpRequest();
+				// xhr.open("GET", "test.html", true);
+				// xhr.onreadystatechange = function() {
+				// 	if (xhr.readyState == 4) {
+				// 		if (xhr.status == 200) {
+				// 			$("#output").after(xhr.responseText);
+				// 		}
+				// 	}
+				// }
+
+				// xhr.send();
+				
+				// $.ajax({
+				// 	type: "GET",
+				// 	url: "test.html",
+				// 	dataType: "html", // json, xml, script
+				// 	success: function(data) {
+				// 		$("#output").after(data);
+				// 	}
+				// });
+
+				// $.ajax({
+				// 	type: "GET",
+				// 	url: "script.js",
+				// 	dataType: "script", // json, xml, script
+				// });
+
+				// $.ajax({
+				// 	type: "GET",
+				// 	url: "test.xml",
+				// 	dataType: "xml", // json, xml, script
+				// 	success: function(xml) {
+				// 		$("#to").append($(xml).find("to").text());
+				// 		$("#from").append($(xml).find("from").text());
+				// 		$("#message").append($(xml).find("body").text());
+				// 	}
+				// });	
+
+				// $("#content").load("test.html .user2", function() {
+				// 	$("#content > span").hide();
+				// });	
+
+				$.ajax({
+					type: "GET",
+					url: "http://localhost:4000/cars",
+					dataType: "json", // json, xml, script
+					success: function(cars) {
+						var ul = $("#content");
+						cars.forEach((car) => {
+							ul.append("<li>model: " + car.model + " year: " + car.year + "</li>");
+						});
+					}
+				});	
+
+			});
+
+			$("#btn2").on("click", function() {
+				$.ajax({
+					type: "GET",
+					url: "http://localhost:4000/users/1",
+					dataType: "json", // json, xml, script
+					success: function(user) {
+						alert(user.name);
+					}
+				});
+			});
+
+			$("#addCar").on("click", function(e) {
+				e.preventDefault();
+
+				var body = {
+					model: $("form").find("[name=model]").val(),
+					year:  $("form").find("[name=year]").val()
+				};
+
+				$.ajax({
+					type: "POST",
+					url: "http://localhost:4000/cars",
+					data: body,
+					dataType: "json", // json, xml, script
+					success: function(car) {
+						alert(car.model);
+					},
+					error: function() {
+						alert("error");
+					},
+					complete: function() {
+						alert("complete");
+					},
+					beforeSend: function() {
+
+					},
+					headers: {
+
+					}
+				});
+
+				$(document).ajaxStart(function() {
+					//...
+				});
+
+				var data = JSON.stringify({
+					name: "1234"
+				});
+
+				var result = JSON.parse(data);
+
+				console.log(result.name);
+
+				$.param(result);
+				$("form").serialize();
+				$("form").serializeArray();
+			});
+		});
+	</script>
+</head>
+<body>
+	<button id="btn">get</button>
+	<button id="btn2">user</button>
+<!-- 	<p id="to"></p>
+	<p id="from"></p>
+	<p id="message"></p> -->
+
+<!-- 	<div id="content">
+		<span id="loader">loader</span>
+	</div> -->
+
+	<ul id="content">
+		
+	</ul>
+
+	<form>
+		<input type="text" name="model">
+		<input type="text" name="year">
+		<button id="addCar">add car</button>
+	</form>
+</body>
+</html>
